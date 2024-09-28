@@ -1,4 +1,12 @@
+/*to-do: 
+-Move switchPlayer to the playerController module
+-get rid of 'true'
+
+
+*/
+
 //to switch players: gameController.switchPlayer(); 
+//to play turn: gameController.playTurn(# of array cell you want to select)
 
 const boardController = (function(){
 
@@ -16,12 +24,9 @@ const playerController = (function(){
     const playerTwoName = "Laurel"
 
     const createPlayer = (name,token,turn)  =>{
-
         const newPlayer = {name, token, turn}
         const logNewPlayer = console.log(newPlayer)
-
      return{newPlayer}
-
     }
 
     const playerOne = createPlayer("Joe", "X", true);
@@ -40,9 +45,10 @@ const gameController = (function(){
     const logCurrentPlayer= console.log(currentPlayerToken);
     let currentTurn = playerController.playerOne;
 
+
     console.log(currentTurn);
 
-     const switchPlayer = function(){
+     const switchPlayer = ()=>{
         if(currentTurn == playerController.playerOne){
             currentTurn = playerController.playerTwo
             return(currentTurn)
@@ -50,16 +56,19 @@ const gameController = (function(){
             currentTurn = playerController.playerOne
             return(currentTurn)
         }
-
      }
 
-return {switchPlayer, currentTurn};
+     const playTurn = (move) =>{
+if(boardController.board[move] == ""){
+           boardController.board[move] = currentTurn.newPlayer.token
+           const logNewBoard = console.log(boardController.board)
+           switchPlayer();
+            return(logNewBoard)
+     }
+    }
 
+return {switchPlayer, currentTurn, playTurn};
 })();
 
 
-
-/*
-playerController.createPlayer(playerController.playerOneName, "X");
-playerController.createPlayer(playerController.playerTwoName, "O");
-*/
+gameController.playTurn(3)
