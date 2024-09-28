@@ -8,6 +8,8 @@
 //to switch players: gameController.switchPlayer(); 
 //to play turn: gameController.playTurn(# of array cell you want to select)
 
+//Board Controller Module
+
 const boardController = (function(){
 
 const board = Array(9).fill("")
@@ -17,6 +19,8 @@ const logBoard = console.log(board)
 
 return{board, logBoard};
 })();
+
+//Player Controller Module
 
 const playerController = (function(){
 
@@ -38,6 +42,8 @@ const playerController = (function(){
 
 })();    
 
+
+// Game Controller Module
 
 const gameController = (function(){
 
@@ -67,8 +73,26 @@ if(boardController.board[move] == ""){
      }
     }
 
-return {switchPlayer, currentTurn, playTurn};
+    const testTie = ()=>{
+//tests if there are no empty cells (will execute after check Win to avoid last move winners being mistaken)
+
+       function isEmpty(cell){
+        return cell == ("")
+       }
+
+//if no empty cells and its not a win
+
+      const  filtered = boardController.board.filter(isEmpty)
+       if(filtered.length < 1){
+            alert("tie")
+       }
+       const logFiltered = console.log(filtered)
+       return{filtered, logFiltered}
+    }
+
+
+return {switchPlayer, currentTurn, playTurn, testTie};
 })();
 
 
-gameController.playTurn(3)
+gameController.testTie()
