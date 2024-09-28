@@ -53,14 +53,17 @@ const gameController = (function(){
 
 
     console.log(currentTurn);
+    const logTurn = console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
 
      const switchPlayer = ()=>{
         if(currentTurn == playerController.playerOne){
             currentTurn = playerController.playerTwo
-            return(currentTurn)
+            console.log(`${playerController.playerTwo.newPlayer.name}'s TURN`)
+            return(currentTurn,logTurn)
         } if(currentTurn == playerController.playerTwo){
             currentTurn = playerController.playerOne
-            return(currentTurn)
+            logTurn =console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
+            return(currentTurn, logTurn)
         }
      }
 
@@ -68,30 +71,57 @@ const gameController = (function(){
 if(boardController.board[move] == ""){
            boardController.board[move] = currentTurn.newPlayer.token
            const logNewBoard = console.log(boardController.board)
+           checkWinner()
+           testTie();
            switchPlayer();
             return(logNewBoard)
      }
     }
 
     const testTie = ()=>{
-//tests if there are no empty cells (will execute after check Win to avoid last move winners being mistaken)
-
+            //tests if there are no empty cells (will execute after check Win to avoid last move winners being mistaken)
        function isEmpty(cell){
         return cell == ("")
        }
-
-//if no empty cells and its not a win
-
+            //if no empty cells and its not a win
       const  filtered = boardController.board.filter(isEmpty)
        if(filtered.length < 1){
             alert("tie")
        }
-       const logFiltered = console.log(filtered)
-       return{filtered, logFiltered}
+       return{filtered}
+    }
+
+    const checkWinner = () =>{
+        const winningStats = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+        for(let winState of winningStats) {
+            const [position1, position2, position3] = winState;
+            
+            if (
+                boardController.board[position1] !== '' && 
+               boardController.board[position1] === boardController.board[position2] && 
+                boardController.board[position1] === boardController.board[position3]
+            ) {
+                alert(`${currentTurn.newPlayer.name} wins`)
+                return;
+
+            }
+    
+        }
     }
 
 
-return {switchPlayer, currentTurn, playTurn, testTie};
+
+
+return {switchPlayer, currentTurn, playTurn, testTie, checkWinner};
 })();
 
 
