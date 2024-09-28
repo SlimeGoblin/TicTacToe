@@ -59,11 +59,11 @@ const gameController = (function(){
         if(currentTurn == playerController.playerOne){
             currentTurn = playerController.playerTwo
             console.log(`${playerController.playerTwo.newPlayer.name}'s TURN`)
-            return(currentTurn,logTurn)
+            return(currentTurn)
         } if(currentTurn == playerController.playerTwo){
             currentTurn = playerController.playerOne
-            logTurn =console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
-            return(currentTurn, logTurn)
+            console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
+            return(currentTurn)
         }
      }
 
