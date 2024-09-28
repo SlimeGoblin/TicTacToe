@@ -1,26 +1,33 @@
 /*to-do: 
 -Move switchPlayer to the playerController module
 -get rid of 'true'
+-when game ends, switches to player 2 then player 1 quickly
 
 
 */
 
-//to switch players: gameController.switchPlayer(); 
 //to play turn: gameController.playTurn(# of array cell you want to select)
 
-//Board Controller Module
+//Board Controller Module (Initialize board, reset board)
 
 const boardController = (function(){
 
 const board = Array(9).fill("")
 const logBoard = console.log(board)
 
+const resetBoard =()=>{
+    for(i = 0; i<board.length;i++){
+        board[i]=("")
+    }
+    return(board)
+}
 
 
-return{board, logBoard};
+
+return{board, logBoard, resetBoard};
 })();
 
-//Player Controller Module
+//Player Controller Module (create Player)
 
 const playerController = (function(){
 
@@ -43,32 +50,42 @@ const playerController = (function(){
 })();    
 
 
-// Game Controller Module
+// Game Controller Module(SwitchPlayer, playTurn, TestTie, CheckWInner)
 
 const gameController = (function(){
 
     const currentPlayerToken = playerController.playerOne.newPlayer.token;
     const logCurrentPlayer= console.log(currentPlayerToken);
-    let currentTurn = playerController.playerOne;
+    var currentTurn = playerController.playerOne;
+    var newGame = true
 
 
     console.log(currentTurn);
     const logTurn = console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
 
      const switchPlayer = ()=>{
-        if(currentTurn == playerController.playerOne){
-            currentTurn = playerController.playerTwo
-            console.log(`${playerController.playerTwo.newPlayer.name}'s TURN`)
-            return(currentTurn)
-        } if(currentTurn == playerController.playerTwo){
+        if(newGame == true){
+            console.log(newGame)
             currentTurn = playerController.playerOne
             console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
             return(currentTurn)
         }
+        if(currentTurn == playerController.playerOne && newGame == false){
+            currentTurn = playerController.playerTwo
+            console.log(`${playerController.playerTwo.newPlayer.name}'s TURN`)
+            return(currentTurn)
+        } if(currentTurn == playerController.playerTwo && newGame ==false){
+            currentTurn = playerController.playerOne
+            console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
+            return(currentTurn)
+        }
+
      }
 
-     const playTurn = (move) =>{
-if(boardController.board[move] == ""){
+    const playTurn = (move) =>{
+        newGame = false
+        console.log(newGame)
+        if(boardController.board[move] == ""){
            boardController.board[move] = currentTurn.newPlayer.token
            const logNewBoard = console.log(boardController.board)
            checkWinner()
@@ -86,6 +103,8 @@ if(boardController.board[move] == ""){
             //if no empty cells and its not a win
       const  filtered = boardController.board.filter(isEmpty)
        if(filtered.length < 1){
+            currentTurn = playerController.playerOne
+            boardController.resetBoard();
             alert("tie")
        }
        return{filtered}
@@ -111,6 +130,8 @@ if(boardController.board[move] == ""){
                 boardController.board[position1] === boardController.board[position3]
             ) {
                 alert(`${currentTurn.newPlayer.name} wins`)
+                boardController.resetBoard();
+                newGame = true
                 return;
 
             }
@@ -121,8 +142,13 @@ if(boardController.board[move] == ""){
 
 
 
+
 return {switchPlayer, currentTurn, playTurn, testTie, checkWinner};
 })();
 
 
-gameController.testTie()
+
+gameController.playTurn(0);
+gameController.playTurn(8);
+gameController.playTurn(1);
+gameController.playTurn(7);
