@@ -1,31 +1,52 @@
 /*to-do: 
+-Add HTML
+-Add CSS
+
 -Move switchPlayer to the playerController module
 -get rid of 'true'
--when game ends, switches to player 2 then player 1 quickly
-
-
 */
 
 //to play turn: gameController.playTurn(# of array cell you want to select)
 
 //Board Controller Module (Initialize board, reset board)
 
+
+
 const boardController = (function(){
+   
+        const gameBoard= document.querySelector(".gameBoard");
 
-const board = Array(9).fill("")
-const logBoard = console.log(board)
+        const board = Array(9).fill("")
+        const logBoard = console.log(board)
 
-const resetBoard =()=>{
-    for(i = 0; i<board.length;i++){
-        board[i]=("")
-    }
-    return(board)
-}
+                const resetBoard =()=>{
+                    for(i = 0; i<board.length;i++){
+                        board[i]=("")
+                    }
+                    return(board)
+                }
+
+//DOM Manipulation
+
+                const showBoard =()=>{
+                    for(i=0; i<board.length; i++){
+                        content=document.createElement("div")
+                        content.classList.add("cell");
+                        content.setAttribute("id", `cell${i}`)
+                        content.addEventListener(`click`, console.log("test"))
+                        gameBoard.appendChild(content)
+                    }
+                }
+
+showBoard();
 
 
 
-return{board, logBoard, resetBoard};
+return{board, logBoard, resetBoard,showBoard, gameBoard};
 })();
+
+
+
 
 //Player Controller Module (create Player)
 
@@ -59,6 +80,9 @@ const gameController = (function(){
     var currentTurn = playerController.playerOne;
     var newGame = true
 
+    //DOM Manipulation
+    
+
 
     console.log(currentTurn);
     const logTurn = console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
@@ -79,7 +103,6 @@ const gameController = (function(){
             console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
             return(currentTurn)
         }
-
      }
 
     const playTurn = (move) =>{
@@ -139,16 +162,15 @@ const gameController = (function(){
         }
     }
 
+boardController.gameBoard.addEventListener('click', test =(e)=>{
+    var grid = e.target.id
+    var gridid= grid[grid.length-1]
+    console.log(gridid)
+    playTurn(gridid);
 
-
+})
 
 
 return {switchPlayer, currentTurn, playTurn, testTie, checkWinner};
 })();
 
-
-
-gameController.playTurn(0);
-gameController.playTurn(8);
-gameController.playTurn(1);
-gameController.playTurn(7);
