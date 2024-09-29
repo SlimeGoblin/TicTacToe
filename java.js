@@ -79,31 +79,41 @@ const gameController = (function(){
     const logCurrentPlayer= console.log(currentPlayerToken);
     var currentTurn = playerController.playerOne;
     var newGame = true
+    var gameOver =false
 
     //DOM Manipulation
     
-
+    var messageAlert = document.getElementById("messageAlert" )
+    messageAlert.textContent = `${playerController.playerOne.newPlayer.name}'s TURN`
 
     console.log(currentTurn);
     const logTurn = console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
 
+
+
      const switchPlayer = ()=>{
+        if(gameOver == true){
+            messageAlert.textContent=`${currentTurn.newPlayer.name} WINS!`
+            return
+        }
         if(newGame == true){
             console.log(newGame)
             currentTurn = playerController.playerOne
-            console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
+            messageAlert.textContent=`${playerController.playerOne.newPlayer.name}'s TURN`
             return(currentTurn)
         }
         if(currentTurn == playerController.playerOne && newGame == false){
             currentTurn = playerController.playerTwo
-            console.log(`${playerController.playerTwo.newPlayer.name}'s TURN`)
+            messageAlert.textContent=`${playerController.playerTwo.newPlayer.name}'s TURN`
             return(currentTurn)
         } if(currentTurn == playerController.playerTwo && newGame ==false){
             currentTurn = playerController.playerOne
-            console.log(`${playerController.playerOne.newPlayer.name}'s TURN`)
+            messageAlert.textContent=(`${playerController.playerOne.newPlayer.name}'s TURN`)
             return(currentTurn)
         }
      }
+
+
 
     const playTurn = (move) =>{
         newGame = false
@@ -113,7 +123,7 @@ const gameController = (function(){
            const logNewBoard = console.log(boardController.board)
            checkWinner()
            testTie();
-           switchPlayer();
+            switchPlayer();
             return(logNewBoard)
      }
     }
@@ -127,7 +137,7 @@ const gameController = (function(){
       const  filtered = boardController.board.filter(isEmpty)
        if(filtered.length < 1){
             currentTurn = playerController.playerOne
-            boardController.resetBoard();
+            boardController.gameBoard.removeEventListener('click', test)
             alert("tie")
        }
        return{filtered}
@@ -152,19 +162,20 @@ const gameController = (function(){
                boardController.board[position1] === boardController.board[position2] && 
                 boardController.board[position1] === boardController.board[position3]
             ) {
-                alert(`${currentTurn.newPlayer.name} wins`)
-                boardController.resetBoard();
-                newGame = true
-                return;
-
-            }
-    
+                messageAlert.textContent="hi"
+                console.log(`${currentTurn.newPlayer.name} wins`)
+                boardController.gameBoard.removeEventListener('click', test)
+                gameOver = true
+                return
+            } 
         }
     }
 
 boardController.gameBoard.addEventListener('click', test =(e)=>{
+    var gridCell = e.target
     var grid = e.target.id
     var gridid= grid[grid.length-1]
+    gridCell.textContent = `${currentTurn.newPlayer.token}`
     console.log(gridid)
     playTurn(gridid);
 

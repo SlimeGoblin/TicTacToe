@@ -53,11 +53,11 @@
 
 .cell{
     background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#cell1{
-    background-color: rgb(126, 126, 30);
-}
 
 .playerTwo{
     grid-area: 2/3/3/4;
