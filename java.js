@@ -1,8 +1,8 @@
 /*to-do: 
--Add HTML
--Add CSS
+-Make reset button work
+-add DOM to Player Name sections
+-Make look better
 
--Move switchPlayer to the playerController module
 -get rid of 'true'
 */
 
@@ -80,6 +80,7 @@ const gameController = (function(){
     var currentTurn = playerController.playerOne;
     var newGame = true
     var gameOver =false
+    var tie=false
 
     //DOM Manipulation
     
@@ -96,6 +97,12 @@ const gameController = (function(){
             messageAlert.textContent=`${currentTurn.newPlayer.name} WINS!`
             return
         }
+
+        if(tie == true){
+            messageAlert.textContent="TIE!"
+            return
+        }
+
         if(newGame == true){
             console.log(newGame)
             currentTurn = playerController.playerOne
@@ -136,11 +143,12 @@ const gameController = (function(){
             //if no empty cells and its not a win
       const  filtered = boardController.board.filter(isEmpty)
        if(filtered.length < 1){
-            currentTurn = playerController.playerOne
             boardController.gameBoard.removeEventListener('click', test)
-            alert("tie")
+            messageAlert.textContent = "TIE!"
+            tie = true
+            return
        }
-       return{filtered}
+
     }
 
     const checkWinner = () =>{
@@ -162,7 +170,6 @@ const gameController = (function(){
                boardController.board[position1] === boardController.board[position2] && 
                 boardController.board[position1] === boardController.board[position3]
             ) {
-                messageAlert.textContent="hi"
                 console.log(`${currentTurn.newPlayer.name} wins`)
                 boardController.gameBoard.removeEventListener('click', test)
                 gameOver = true
@@ -180,6 +187,35 @@ boardController.gameBoard.addEventListener('click', test =(e)=>{
     playTurn(gridid);
 
 })
+
+// reset button
+
+const reset = document.getElementById("reset");
+
+reset.addEventListener('click', resetBoard =()=>{
+    var allCells = document.querySelectorAll(".cell")
+
+    for(i=0; i < allCells.length; i++){
+        allCells[i].textContent=''
+    }
+    boardController.resetBoard();
+    newGame = true
+   gameOver =false
+    tie=false
+
+    boardController.gameBoard.addEventListener('click', test =(e)=>{
+        var gridCell = e.target
+        var grid = e.target.id
+        var gridid= grid[grid.length-1]
+        gridCell.textContent = `${currentTurn.newPlayer.token}`
+        console.log(gridid)
+        playTurn(gridid);
+    })
+    
+    messageAlert.textContent = `${playerController.playerOne.newPlayer.name}'s TURN`
+
+})
+
 
 
 return {switchPlayer, currentTurn, playTurn, testTie, checkWinner};
