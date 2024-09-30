@@ -1,6 +1,5 @@
 /*to-do: 
 
-
 -get rid of 'true'
 */
 
@@ -173,6 +172,7 @@ const gameController = (function(){
                 console.log(`${currentTurn.newPlayer.name} wins`)
                 boardController.gameBoard.removeEventListener('click', test)
                 gameOver = true
+                messageAlert.classList.add("blinking-text")
                 return
             } 
         }

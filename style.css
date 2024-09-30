@@ -72,6 +72,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family:"Shadows Into Light", sans-serif, Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 3rem;
+
+}
+.cell:hover{
+    opacity: .7;
 }
 
 
@@ -97,4 +105,32 @@
     margin: 10px;
     outline: 2px solid #A02334;
     outline-offset: 2px
+}
+
+#reset:hover{
+    opacity: .5;
+}
+
+#playerOneToken, #playerTwoToken{
+    font-family:"Shadows Into Light", sans-serif, Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 3rem;
+
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+    
+}
+.blinking-text{
+    animation: blink 1s infinite;
 }
