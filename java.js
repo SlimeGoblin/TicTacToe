@@ -1,7 +1,5 @@
 /*to-do: 
--Make reset button work
--add DOM to Player Name sections
--Make look better
+
 
 -get rid of 'true'
 */
@@ -52,8 +50,10 @@ return{board, logBoard, resetBoard,showBoard, gameBoard};
 
 const playerController = (function(){
 
-    const playerOneName = "Joe"
-    const playerTwoName = "Laurel"
+    const userNameOne = document.getElementById("playerOneTitle")
+
+    const playerOneName = "Player One"
+    const playerTwoName = "Player Two"
 
     const createPlayer = (name,token,turn)  =>{
         const newPlayer = {name, token, turn}
@@ -61,8 +61,8 @@ const playerController = (function(){
      return{newPlayer}
     }
 
-    const playerOne = createPlayer("Joe", "X", true);
-    const playerTwo = createPlayer("Laurel","O", false);
+    const playerOne = createPlayer("Player One", "X", true);
+    const playerTwo = createPlayer("Player Two","O", false);
 
 
 
@@ -182,17 +182,26 @@ boardController.gameBoard.addEventListener('click', test =(e)=>{
     var gridCell = e.target
     var grid = e.target.id
     var gridid= grid[grid.length-1]
+    if(gridCell.textContent==""){
     gridCell.textContent = `${currentTurn.newPlayer.token}`
     console.log(gridid)
     playTurn(gridid);
-
+    }
 })
 
 // reset button
 
 const reset = document.getElementById("reset");
 
+
+
 reset.addEventListener('click', resetBoard =()=>{
+
+    location.reload();
+
+    //this code works but if you click reset on player two's turn, it stays their turn on the new game
+
+    /*
     var allCells = document.querySelectorAll(".cell")
 
     for(i=0; i < allCells.length; i++){
@@ -211,9 +220,8 @@ reset.addEventListener('click', resetBoard =()=>{
         console.log(gridid)
         playTurn(gridid);
     })
-    
-    messageAlert.textContent = `${playerController.playerOne.newPlayer.name}'s TURN`
-
+messageAlert.textContent = `${playerController.playerOne.newPlayer.name}'s TURN`
+*/
 })
 
 
